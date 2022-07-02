@@ -1,0 +1,75 @@
+{
+  "blocks": [
+    {
+      "id": "3eouK02K",
+      "type": "h2",
+      "data": {
+        "level": "2",
+        "heading": "Header Two"
+      }
+    },
+    {
+      "id": "ieEGuifN",
+      "type": "h3",
+      "data": {
+        "level": "3",
+        "heading": "Header Three"
+      }
+    },
+    {
+      "id": "svNUx8pI",
+      "type": "h4",
+      "data": {
+        "level": "4",
+        "heading": "Header Four"
+      }
+    },
+    {
+      "id": "78CI4LXT",
+      "type": "h5",
+      "data": {
+        "level": "5",
+        "heading": "Header Five"
+      }
+    },
+    {
+      "id": "grstD5LT",
+      "type": "h6",
+      "data": {
+        "level": "6",
+        "heading": "Header 6"
+      }
+    },
+    {
+      "id": "kfNTkt2a",
+      "type": "richText",
+      "data": "<div style=\"text-align: center;\"><span style=\"font-size: xx-large;\">TachyonCMS Rich Text Editor</span></div><div style=\"text-align: left;\"><font size=\"3\">Allows creating rich text within a TachyonCMS Nugget.</font></div><div style=\"text-align: left;\"><font size=\"3\">Left Align</font></div><div style=\"text-align: right;\"><font size=\"3\">Right Align</font></div><div style=\"text-align: justify;\"><font size=\"3\">Justify Aligned with the rest</font></div><div style=\"text-align: justify;\"><font size=\"3\"><b>Bold</b></font></div><div style=\"text-align: justify;\"><font size=\"3\"><i>Italic</i></font></div><div style=\"text-align: justify;\"><font size=\"3\"><strike>Strikethrough</strike></font></div><div style=\"text-align: justify;\"><font size=\"3\"><u>Underscore</u></font></div><div style=\"text-align: justify;\"><font size=\"3\"><sub>Subscript</sub> <sup>Superscript</sup></font></div><div style=\"text-align: justify;\"><br></div><div style=\"text-align: justify;\"><hr><h3>Heading Three</h3></div><h4 style=\"text-align: justify;\">Heading Four</h4><div style=\"text-align: justify;\"><h5>Heading Five</h5><h6>Heading Six</h6><pre>Code</pre><pre><font size=\"1\">Very Small</font></pre><pre><font size=\"2\">A bit small</font></pre><pre><font size=\"3\">Normal</font></pre><pre><font size=\"4\">medium large</font></pre><pre><font size=\"5\">big</font></pre><pre><font size=\"6\">very big</font></pre><pre><font size=\"7\">Maximum</font></pre><blockquote><font size=\"1\">Quote of the day</font></blockquote><pre><ul><li>Bulleted</li><li>list</li></ul><div><ol><li>Numbered</li><li>list</li></ol><div><font face=\"Arial\">There</font> <font face=\"Arial Black\">are</font> <font face=\"Comic Sans MS\">all</font> Sorts <font face=\"Courier New\">of</font> <font face=\"Impact\">fonts</font> <font face=\"Lucida Grande\">to</font> <font face=\"Times New Roman\">choose</font> <font face=\"Verdana\">from</font></div></div></pre></div><div style=\"text-align: justify;\"></div><div style=\"text-align: justify;\"></div>"
+    },
+    {
+      "id": "zFq549uT",
+      "type": "image",
+      "data": {
+        "url": "https://www.tachyoncms.org/bike-and-trailer.jpeg",
+        "captionText": "Solar Bike Trailer",
+        "captionPosition": "absolute-top-left",
+        "font": "Impact",
+        "fontSize": "xx-large",
+        "fontStyle": "Normal",
+        "fontWeight": "text-weight-medium",
+        "fontColor": "#f5f12f"
+      }
+    },
+    {
+      "id": "ush5z0Be",
+      "type": "basicSeparator",
+      "data": {
+        "padTop": "sm",
+        "padBot": "xs",
+        "padSides": "md",
+        "size": ".2em",
+        "color": "green",
+        "colorVar": "4"
+      }
+    }
+  ]
+}
