@@ -54,14 +54,24 @@ export default defineComponent({
   emit: ["newPageTitle"],
   setup(props, { emit }) {
     const route = useRoute();
-    const flowId = route.params.flowId;
+    const flowId = computed(() => {
+      return route.params.flowId;
+    });
     const flowLoaded = ref(false);
     const flowData = ref(null);
     const { loadFlowData, title } = useFlowReader();
     onMounted(async () => {
-      flowData.value = await loadFlowData(flowId);
+      flowData.value = await loadFlowData(flowId.value);
       flowLoaded.value = true;
       emit("newPageTitle", flowData.value.title);
+    });
+
+    watch(flowId, (newFlowId) => {
+      flowLoaded.value = false;
+      loadFlowData(newFlowId).then((data) => {
+        flowData.value = data;
+      });
+      flowLoaded.value = true;
     });
 
     // NOTICE the parameter here is a function
@@ -73,7 +83,7 @@ export default defineComponent({
       };
     });
 
-    return { flowLoaded, flowData, title };
+    return { flowLoaded, flowData, title, flowId };
   },
 });
 </script>

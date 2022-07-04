@@ -46,13 +46,7 @@ const hostSite = {
   "www.opensourcebike.com": "opensourcebike",
   "www.tachyoncms.com": "tachyoncms-com",
   "www.etownmall.com": "etownmall",
-  "etownmall.com": "etownmall",
-  "bikemechanic.info": "bikemechanic",
-  "ezvegetarian.com": "ezvegetarian",
-  "financeaproperty.com": "financeaproperty",
-  "netrealestateguide.com": "netrealestateguide",
-  "opensourcebike.com": "opensourcebike",
-  "tachyoncms.com": "tachyoncms-com",
+  "www.izzup.com": "izzup",
   localhost: "dev",
 };
 
@@ -72,6 +66,7 @@ const siteFlow = {
   "tachyoncms-com": "wWap_bxAI_Gg6N_DJoF_g8Ib",
   etownmall: "SUok_qLLO_5H4g_kAFK_cKPx",
   dev: "z2LP_8che_ypUi_uNID_JEs3",
+  izzup: "Llu2_iPdV_GfZs_wvux_Q1w0",
 };
 
 // Main export
