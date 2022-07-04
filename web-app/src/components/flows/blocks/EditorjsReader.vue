@@ -1,6 +1,9 @@
 <template>
     <div class="row fit q-pa-md">
-        <div class="fit col-12" :id="divName" :ref="divName" />
+        <div class="col-2"></div>
+        <div class="col-8 justify-center relative-position">
+            <div class="fit" :id="divName" />
+        </div>
     </div>
 </template>
 
@@ -20,7 +23,6 @@ import CodeTool from "@editorjs/code";
 
 export default defineComponent({
     name: "vue-editor-js",
-    emits: ["save"],
     props: {
         blocks: {
             type: Array,
@@ -62,6 +64,7 @@ export default defineComponent({
                     blocks: props.blocks,
                     version: "2.24.3",
                 },
+                readOnly: true,
                 tools: {
                     header: Header,
                     list: List,
@@ -98,30 +101,10 @@ export default defineComponent({
                 state.editor = null;
             }
         }
-        onMounted((_) => {
-            initEditor(props);
-            // Get the editor.js div and set it to readOnly
-            //document.getElementById(divName).readOnly = true;
-        });
+        onMounted((_) => initEditor(props));
         return { props, state, divName, dirtyBit };
     },
-    methods: {
-        onSave() {
-            console.log("SAVING");
-            //
-            this.state.editor
-                .save()
-                .then((outputData) => {
-                    console.log("Article data: ", outputData);
-                    const blocks =
-                        outputData.blocks.length > 0 ? outputData.blocks : [];
-                    this.$emit("save", outputData.blocks);
-                })
-                .catch((error) => {
-                    console.log("Saving failed: ", error);
-                });
-        },
-    },
+    methods: {},
 });
 </script>
 

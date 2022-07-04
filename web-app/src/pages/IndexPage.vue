@@ -2,19 +2,16 @@
   <q-page>
     <!-- Show a spinner over the div if the flow hasn't finished loading. -->
     <template v-if="flowLoaded">
-      <template v-if="nuggets.length > 0">
-        <!-- Reactive list of Nuggets from within the Flow object. -->
-
-        <q-list v-for="nugget in nuggets" :key="nugget.id">
+      <template v-if="flowData.nuggets">
+        <q-list v-for="nugget in flowData.nuggets" :key="nugget.id">
           <div class="nugget-container row col-12">
             <render-blocks
-              :blocks="nuggetBlocksMap.get(nugget.id)"
+              :blocks="nugget.blocks"
               v-if="nugget.type === 'media'"
             >
             </render-blocks>
-            {{ nugget.type }}
             <editorjs-reader
-              :blocks="nuggetBlocksMap.get(nugget.id)"
+              :blocks="nugget.blocks"
               v-if="nugget.type === 'editor'"
             >
             </editorjs-reader>
@@ -35,7 +32,7 @@ import { defineComponent, computed, ref, reactive, onMounted } from "vue";
 
 import { useQuasar, useMeta } from "quasar";
 
-import { tcms } from "boot/axios";
+import useFlowReader from "../composables/useFlowReader.js";
 
 import RenderBlocks from "../components/flows/blocks/RenderBlocks";
 import EditorjsReader from "../components/flows/blocks/EditorjsReader";
@@ -85,7 +82,7 @@ export default defineComponent({
     RenderBlocks,
     EditorjsReader,
   },
-  emit: ["newPageTitle"],
+  emits: ["newPageTitle"],
   setup(props, { emit }) {
     const hostName = computed(() => {
       return window.location.hostname;
@@ -97,81 +94,16 @@ export default defineComponent({
     siteName.value = hostSite[hostName.value];
     siteFlowId.value = siteFlow[siteName.value];
 
-    // Is any flow data loaded?
+    const { loadFlowData, title } = useFlowReader();
+
+    const flowData = ref(null);
+
     const flowLoaded = ref(false);
 
-    // The flow data
-    const flowData = ref({});
-
-    // Are nuggets being loaded? They may be loaded in batches on-demand.
-    const nuggetsLoading = ref(false);
-
-    // A sequenced array of nuggetIds
-    const nuggetSeq = ref(null);
-
-    // Reactive array of Nuggets
-    const nuggets = ref([]);
-
-    // A map of blocks by nuggetId
-    const nuggetBlocksMap = reactive(new Map());
-
-    const title = ref("fetching greatness...");
-    // Fetch the JSON files for this flow and nuggets
-    const fetchFlowData = (siteFlowId) => {
-      console.log("Fetching data for flow: " + siteFlowId);
-
-      // Get the flow.json to get the title
-      tcms
-        .get("/flows/" + siteFlowId + "/flow.json")
-        .then((response) => {
-          flowData.value = response.data;
-          flowLoaded.value = true;
-          title.value = response.data.title;
-          emit("newPageTitle", title.value);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      // Get the nugget seq so we can start loading nuggets
-      tcms
-        .get("/flows/" + siteFlowId + "/nuggetSeq.json")
-        .then((response) => {
-          nuggetSeq.value = response.data.nuggetSeq;
-          response.data.nuggetSeq.forEach((nuggetId) => {
-            console.log("Fetching data for nugget: " + nuggetId);
-            console.log(response.data.nuggetSeq);
-            // Use Axios to fetch JSON files from app public directory
-            tcms
-              .get("/nuggets/" + nuggetId + "/nugget.json")
-              .then((response) => {
-                console.log(response.data);
-                nuggets.value.push(response.data);
-
-                tcms
-                  .get("/nuggets/" + nuggetId + "/blocks.json")
-                  .then((response) => {
-                    console.log(response.data);
-                    nuggetBlocksMap.set(nuggetId, response.data.blocks);
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      console.log(nuggets.value);
-    };
-
     onMounted(async () => {
-      fetchFlowData(siteFlowId.value);
+      flowData.value = await loadFlowData(siteFlowId.value);
+      flowLoaded.value = true;
+      emit("newPageTitle", flowData.value.title);
     });
 
     // NOTICE the parameter here is a function
@@ -189,9 +121,7 @@ export default defineComponent({
       siteFlowId,
       flowLoaded,
       flowData,
-      nuggetSeq,
-      nuggets,
-      nuggetBlocksMap,
+      title,
     };
   },
 });

@@ -1,21 +1,6 @@
 {
   "blocks": [
     {
-      "id": "mjMPd5fKaf",
-      "type": "link",
-      "data": {
-        "link": "https://www.tachyoncms.org/",
-        "meta": {}
-      }
-    },
-    {
-      "id": "uupVlWPQmm",
-      "type": "paragraph",
-      "data": {
-        "text": "Text looks like this, above is a Link."
-      }
-    },
-    {
       "id": "_QtNvlgAOj",
       "type": "header",
       "data": {
@@ -29,6 +14,13 @@
       "data": {
         "text": "Headings can be tuned for size",
         "level": 6
+      }
+    },
+    {
+      "id": "tgraI522-P",
+      "type": "paragraph",
+      "data": {
+        "text": "Text looks like this."
       }
     },
     {

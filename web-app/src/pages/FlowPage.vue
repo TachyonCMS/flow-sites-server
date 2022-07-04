@@ -2,18 +2,16 @@
   <q-page>
     <!-- Show a spinner over the div if the flow hasn't finished loading. -->
     <template v-if="flowLoaded">
-      <template v-if="nuggets.length > 0">
-        <!-- Reactive list of Nuggets from within the Flow object. -->
-
-        <q-list v-for="nugget in nuggets" :key="nugget.id">
+      <template v-if="flowData.nuggets">
+        <q-list v-for="nugget in flowData.nuggets" :key="nugget.id">
           <div class="nugget-container row col-12">
             <render-blocks
-              :blocks="nuggetBlocksMap.get(nugget.id)"
+              :blocks="nugget.blocks"
               v-if="nugget.type === 'media'"
             >
             </render-blocks>
             <editorjs-reader
-              :blocks="nuggetBlocksMap.get(nugget.id)"
+              :blocks="nugget.blocks"
               v-if="nugget.type === 'editor'"
             >
             </editorjs-reader>
@@ -42,7 +40,7 @@ import { useRoute } from "vue-router";
 
 import { useQuasar, useMeta } from "quasar";
 
-import { tcms } from "boot/axios";
+import useFlowReader from "../composables/useFlowReader.js";
 
 import RenderBlocks from "../components/flows/blocks/RenderBlocks";
 import EditorjsReader from "../components/flows/blocks/EditorjsReader";
@@ -56,104 +54,14 @@ export default defineComponent({
   emit: ["newPageTitle"],
   setup(props, { emit }) {
     const route = useRoute();
-
-    // Is any flow data loaded?
+    const flowId = route.params.flowId;
     const flowLoaded = ref(false);
-
-    // The flow data
-    const flowData = ref({});
-
-    // Are nuggets being loaded? They may be loaded in batches on-demand.
-    const nuggetsLoading = ref(false);
-
-    // A sequenced array of nuggetIds
-    const nuggetSeq = ref(null);
-
-    // Reactive array of Nuggets
-    const nuggets = ref([]);
-
-    // A map of blocks by nuggetId
-    const nuggetBlocksMap = reactive(new Map());
-
-    // The current flowId
-    const flowId = computed(() => {
-      return route.params.flowId;
-    });
-
-    const title = ref("fetching greatness...");
-
-    // Include Quasar for dialog and loading indicator
-    // @todo Move this to a component
-    const $q = useQuasar();
-    // Configure the loading indicator
-    // https://quasar.dev/quasar-plugins/loading
-    $q.loading.show({
-      delay: 400, // ms
-    });
-    $q.loading.hide();
-
-    const showLoading = () => {
-      $q.loading.show({
-        message: "Transporting nuggets...",
-      });
-    };
-
-    // Fetch the JSON files for this flow and nuggets
-    const fetchFlowData = (flowId) => {
-      console.log("Fetching data for flow: " + flowId);
-
-      // Get the flow.json to get the title
-      tcms
-        .get("/flows/" + flowId + "/flow.json")
-        .then((response) => {
-          flowData.value = response.data;
-          flowLoaded.value = true;
-          title.value = response.data.title;
-          emit("newPageTitle", title.value);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      // Get the nugget seq so we can start loading nuggets
-      tcms
-        .get("/flows/" + flowId + "/nuggetSeq.json")
-        .then((response) => {
-          nuggetSeq.value = response.data.nuggetSeq;
-          response.data.nuggetSeq.forEach((nuggetId) => {
-            console.log("Fetching data for nugget: " + nuggetId);
-            console.log(response.data.nuggetSeq);
-            // Use Axios to fetch JSON files from app public directory
-            tcms
-              .get("/nuggets/" + nuggetId + "/nugget.json")
-              .then((response) => {
-                console.log(response.data);
-                nuggets.value.push(response.data);
-
-                tcms
-                  .get("/nuggets/" + nuggetId + "/blocks.json")
-                  .then((response) => {
-                    console.log(response.data);
-                    nuggetBlocksMap.set(nuggetId, response.data.blocks);
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      console.log(nuggets.value);
-    };
-
+    const flowData = ref(null);
+    const { loadFlowData, title } = useFlowReader();
     onMounted(async () => {
-      fetchFlowData(flowId.value);
+      flowData.value = await loadFlowData(flowId);
+      flowLoaded.value = true;
+      emit("newPageTitle", flowData.value.title);
     });
 
     // NOTICE the parameter here is a function
@@ -165,24 +73,7 @@ export default defineComponent({
       };
     });
 
-    watch(flowId, (flowId) => {
-      flowData.value = { id: flowId };
-      flowLoaded.value = false;
-      nuggetsLoading.value = false;
-      nuggetSeq.value = null;
-      nuggets.value = [];
-      nuggetBlocksMap.clear();
-      fetchFlowData(flowId);
-    });
-
-    return {
-      flowId,
-      flowLoaded,
-      flowData,
-      nuggetsLoading,
-      nuggets,
-      nuggetBlocksMap,
-    };
+    return { flowLoaded, flowData, title };
   },
 });
 </script>

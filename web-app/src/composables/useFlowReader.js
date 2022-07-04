@@ -2,8 +2,6 @@ import { readonly, reactive, ref, computed } from "vue";
 
 import { tcms } from "boot/axios";
 
-import RenderBlocks from "../components/flows/blocks/RenderBlocks";
-
 // MAIN EXPORT FUNCTION
 export default function useFlowReader() {
   // The current flowId
@@ -12,73 +10,63 @@ export default function useFlowReader() {
   // Is any flow data loaded?
   const flowLoaded = ref(false);
 
-  // The flow data
-  const flowData = ref({});
-
-  // Are nuggets being loaded? They may be loaded in batches on-demand.
-  const nuggetsLoading = ref(false);
-
-  // A sequenced array of nuggetIds
-  const nuggetSeq = ref(null);
-
-  // Reactive array of Nuggets
-  const nuggets = ref([]);
-
-  // A map of blocks by nuggetId
-  const nuggetBlocksMap = reactive(new Map());
-
-  const renderBlocks = async (blocks) => {};
+  const title = ref("Fetching great things...");
 
   const loadFlowData = async (flowId) => {
     console.log("Fetching data for flow: " + flowId);
 
     // Get the flow.json to get the title
-    tcms
-      .get("/flows/" + flowId + "/flow.json")
-      .then((response) => {
-        flowData.value = response.data;
-        flowLoaded.value = true;
-        title.value = response.data.title;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
+    const flowDataRes = await tcms.get("/flows/" + flowId + "/flow.json");
+    const flowData = flowDataRes.data;
+    console.log(flowData);
     // Get the nugget seq so we can start loading nuggets
-    tcms
-      .get("/flows/" + flowId + "/nuggetSeq.json")
-      .then((response) => {
-        nuggetSeq.value = response.data.nuggetSeq;
-        response.data.nuggetSeq.forEach((nuggetId) => {
-          console.log("Fetching data for nugget: " + nuggetId);
-          console.log(response.data.nuggetSeq);
-          // Use Axios to fetch JSON files from app public directory
-          tcms
-            .get("/nuggets/" + nuggetId + "/nugget.json")
-            .then((response) => {
-              console.log(response.data);
-              nuggets.value.push(response.data);
+    // const  = await tcms.get("/flows/" + flowId + "/nuggetSeq.json").data;
 
-              tcms
-                .get("/nuggets/" + nuggetId + "/blocks.json")
-                .then((response) => {
-                  console.log(response.data);
-                  nuggetBlocksMap.set(nuggetId, response.data.blocks);
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        });
+    let nuggetSeqRes = await tcms.get("/flows/" + flowId + "/nuggetSeq.json");
+    let nuggetSeq = nuggetSeqRes.data.nuggetSeq;
+    console.log(nuggetSeq);
+
+    const nuggets = await Promise.all(
+      nuggetSeq.map(async (nuggetId) => {
+        try {
+          console.log(nuggetId);
+          const nuggetRes = await tcms.get(
+            "/nuggets/" + nuggetId + "/nugget.json"
+          );
+          const blocksRes = await tcms.get(
+            "/nuggets/" + nuggetId + "/blocks.json"
+          );
+          const nugget = nuggetRes.data;
+          nugget.blocks = blocksRes.data.blocks;
+          console.log(nugget);
+          return nugget;
+        } catch (e) {
+          console.error(e);
+        }
       })
-      .catch((e) => {
-        console.log(e);
-      });
+    );
 
-    console.log(nuggets.value);
+    /*
+    await nuggetSeq.forEach(async (nuggetId) => {
+      console.log("Fetching data for nugget: " + nuggetId);
+      // Use Axios to fetch JSON files from app public directory
+      const nugget = await tcms.get("/nuggets/" + nuggetId + "/nugget.json");
+      const blocks = await tcms.get("/nuggets/" + nuggetId + "/blocks.json");
+
+      console.log(nugget.data);
+      console.log(blocks.data.blocks);
+
+      const nuggetObj = nugget.data;
+      nuggetObj.blocks = blocks.data.blocks;
+
+      nuggets.set(nuggetId, nuggetObj);
+    });
+*/
+    flowData.nuggets = nuggets;
+
+    console.log(flowData);
+
+    return flowData;
   };
 
   // Lookup for - Given a siteName find the primary hostname
@@ -89,11 +77,7 @@ export default function useFlowReader() {
 
   return {
     flowLoaded,
-    flowData,
-    nuggetsLoading,
-    nuggetSeq,
-    nuggets,
-    nuggetBlocksMap,
     loadFlowData,
+    title,
   };
 }
