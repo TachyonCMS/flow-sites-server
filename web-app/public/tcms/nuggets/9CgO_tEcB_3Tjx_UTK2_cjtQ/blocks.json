@@ -1,0 +1,23 @@
+{
+  "blocks": [
+    {
+      "id": "yIHcG9sptK",
+      "type": "header",
+      "data": {
+        "text": "The electronic town mall for all netizens.",
+        "level": 3
+      }
+    },
+    {
+      "id": "kDpK5YILE3",
+      "type": "list",
+      "data": {
+        "style": "unordered",
+        "items": [
+          "Post your goods and services",
+          "Share your views, and have meaningful discussions with others."
+        ]
+      }
+    }
+  ]
+}
