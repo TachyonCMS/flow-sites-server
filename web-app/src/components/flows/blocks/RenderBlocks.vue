@@ -37,6 +37,8 @@ import RichText from "./renders/RichtextBlock";
 import Heading from "./renders/HeadingBlock";
 import Image from "./renders/ImageBlock";
 import BasicSeparator from "./renders/SeparatorBlock";
+import Timeline from "./renders/TimelineBlock";
+import JsonDisplay from "./renders/JsonBlock";
 
 export default defineComponent({
     name: "RenderBlocks",
@@ -51,7 +53,8 @@ export default defineComponent({
         Heading,
         Image,
         BasicSeparator,
-        //    Font
+        Timeline,
+        JsonDisplay,
     },
     setup(props, { emit }) {
         // We'll receive a string that can be converted to a JSON object.
@@ -76,6 +79,8 @@ export default defineComponent({
             h4: "heading",
             h5: "heading",
             h6: "heading",
+            rawJson: "json-display",
+            timeline: "timeline",
         };
 
         return {
