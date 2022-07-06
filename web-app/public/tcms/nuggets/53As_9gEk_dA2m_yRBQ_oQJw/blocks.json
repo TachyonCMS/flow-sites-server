@@ -8,7 +8,7 @@
           {
             "title": "An eBike for the Dog",
             "subtitle": "January 2021",
-            "side": "left",
+            "side": "right",
             "heading": "true",
             "icon": "mdi-bike",
             "color": "green",
@@ -17,7 +17,7 @@
           {
             "title": "Covered Dog Trailer",
             "subtitle": "Spring 2021",
-            "side": "right",
+            "side": "left",
             "icon": "mdi-dog",
             "color": "brown",
             "description": "The dog needed protection from the hot Mojave sun so I covered the trailer with some old flexible solar panels. They weren't connected to anything but were lightweight and would withstand exposure to the sun well."
@@ -25,7 +25,7 @@
           {
             "title": "The Experimentation Begins",
             "subtitle": "Summer 2021",
-            "side": "left",
+            "side": "right",
             "icon": "mdi-flask",
             "color": "blue",
             "description": "Over the summer I experimented with using the solar panels on the dog trailer to charge the bike battery. I wanted to power microcontrollers and WiFi devices on the bike and trailer for security 24x7 and didn't want to drain the battery in the process."
@@ -33,7 +33,7 @@
           {
             "title": "Open Source Bike Launched",
             "subtitle": "August 2021",
-            "side": "right",
+            "side": "left",
             "icon": "mdi-rocket",
             "color": "red",
             "description": "I was sharing some of my experiences with solar ebikes and microcontrollers on social media and wanted to add some structure to that sharing. To that end, opensourcebike.com was launched as a hosted Wordpress site."
@@ -41,7 +41,7 @@
           {
             "title": "Focused on Solar",
             "subtitle": "Fall 2021",
-            "side": "left",
+            "side": "right",
             "icon": "mdi-weather-sunny",
             "color": "yellow-7",
             "description": "Over the fall I worked on determining the feasibility of charging a bicycle while in use. I was sharing more and more content on social media and the website and wasn't happy with either experience."
@@ -49,7 +49,7 @@
           {
             "title": "Going BIG and Staying Home",
             "subtitle": "Winter 2021",
-            "side": "right",
+            "side": "left",
             "icon": "mdi-exclamation",
             "color": "orange",
             "description": "I continued sharing as I built the largest solar trailer I could comfortably tow with a bicycle. I realized I was becoming dependent upon the various `free` cloud services, and getting content back out of them wasn't easy."
@@ -57,7 +57,7 @@
           {
             "title": "Working on a Better Way to Share",
             "subtitle": "Spring 2022",
-            "side": "left",
+            "side": "right",
             "icon": "mdi-share",
             "color": "green-8",
             "description": "The focus moved to finding a better way to collect and share project data. I wanted something builders and makers could use easily. I also wanted something extrmely flexible and programmer friendly."
@@ -65,7 +65,7 @@
           {
             "title": "TachyonCMS Introduced",
             "subtitle": "April 2022",
-            "side": "right",
+            "side": "left",
             "icon": "mdi-bullhorn",
             "color": "red-14",
             "description": "The first preview of the TachyonCMS Desktop Editor was released, as an Electron appliation created from a Quasar project. It set the tone for local-first, unlimited content management."
@@ -73,7 +73,7 @@
           {
             "title": "The First Websites Published with TachyonCMS",
             "subtitle": "April 2022",
-            "side": "left",
+            "side": "right",
             "icon": "mdi-trophy",
             "color": "indigo-10",
             "description": "The first websites were published using TachyonCMS technology. That technology will power all of our content needs gong fowards, a SaaS version is coming soon."
