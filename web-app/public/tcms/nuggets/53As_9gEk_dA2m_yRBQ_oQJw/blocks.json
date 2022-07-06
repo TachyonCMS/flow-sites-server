@@ -65,7 +65,7 @@
           {
             "title": "TachyonCMS Introduced",
             "subtitle": "April 2022",
-            "side": "left",
+            "side": "right",
             "icon": "mdi-bullhorn",
             "color": "red-14",
             "description": "The first preview of the TachyonCMS Desktop Editor was released, as an Electron appliation created from a Quasar project. It set the tone for local-first, unlimited content management."
